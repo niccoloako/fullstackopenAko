@@ -1,0 +1,10 @@
+body{
+    background-color: brown;
+}
+
+.mainDiv{
+    border: 1px;
+    border-style:solid;
+    background-color: blue;
+    padding: 2px;
+}
