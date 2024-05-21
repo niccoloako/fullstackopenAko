@@ -35,10 +35,22 @@ function App() {
 export default App */
 
 import React from 'react'
-
 //fonctions fléchées
 import Moment from 'moment'
 
+var isFullStackOpenCours = true;
+
+const ButtonSwitchMainView = () => {
+  return (
+    <button id='btnSwitchMainView' onClick={(note,ul,li) => 
+      {
+        isFullStackOpenCours = !isFullStackOpenCours;
+        window.location.reload();
+      }
+      }>Switch View</button>
+
+  )
+}
 const Joueurs = [
   { prenom: 'Ricky', nom: 'Kaka', age: 32 },
   { prenom: 'Rafa', nom: 'Leao', age: 25 },
@@ -71,7 +83,7 @@ const ButtonSendForm = () => {
       <button id='btnSendForm' onClick={(note,ul,li) => 
       {
         //TO-DO: ca marche pas: faire reload de la const 'App'
-        debugger;
+        //debugger;
         Prenom = document.getElementById("inputPrenom").value;
         Nom = document.getElementById("inputNom").value;
         Age = document.getElementById("inputAge").value;
@@ -98,45 +110,45 @@ const DivResultForm = (props) => {
 }
 
 //le contenu d'un composant React doit (généralement) contenir un élément racine
-// const App = () => {
-//   console.log('Hello from component')
-//   const now = new Date()
-//   const a = 10
-//   const b = 20
-//   //https://momentjs.com/docs/#/i18n/
-//   //pourquoi cette librerie marche pas et la date c'est montré en anglais??
-//   Moment.locale('fr')
+const MyPersonalApp = () => {
+  console.log('Hello from component')
+  const now = new Date()
+  const a = 10
+  const b = 20
+  //https://momentjs.com/docs/#/i18n/
+  //pourquoi cette librerie marche pas et la date c'est montré en anglais??
+  Moment.locale('fr')
 
 
-//   return(
-//  //nous avons des éléments div "supplémentaires" dans l'arbre DOM. 
-//  //Cela peut être évité en utilisant des fragments, 
-//  //c'est-à-dire en enveloppant les éléments à renvoyer par le composant avec un élément vide
-//   <>
+  return(
+ //nous avons des éléments div "supplémentaires" dans l'arbre DOM. 
+ //Cela peut être évité en utilisant des fragments, 
+ //c'est-à-dire en enveloppant les éléments à renvoyer par le composant avec un élément vide
+  <>
+    {/* <ButtonSwitchMainView /> */}
+    <p>Bonjour à toute le monde, c'est {Moment(now).format('HH:mm dddd MMMM')}</p>
+    <p>
+        {a} plus {b} egal {a + b}
+    </p>
+    <div class="mainDiv">
+        <FormContact />
+    </div>
+    <ButtonSendForm />
+    <br/>
+    <br/>
+    <br/>
+    {/* un element peut etre repeté */}
+    <DivResultForm prenom={Joueurs[0].prenom} nom={Joueurs[0].nom} age={Joueurs[0].age}/>
+    <br />
+    <DivResultForm prenom={Joueurs[1].prenom} nom={Joueurs[1].nom} age={Joueurs[1].age}/>
+    <br />
+    <DivResultForm prenom={Joueurs[2].prenom} nom={Joueurs[2].nom} age={Joueurs[2].age}/>
+    <br />
     
-//     <p>Bonjour à toute le monde, c'est {Moment(now).format('HH:mm dddd MMMM')}</p>
-//     <p>
-//         {a} plus {b} egal {a + b}
-//     </p>
-//     <div class="mainDiv">
-//         <FormContact />
-//     </div>
-//     <ButtonSendForm />
-//     <br/>
-//     <br/>
-//     <br/>
-//     {/* un element peut etre repeté */}
-//     <DivResultForm prenom={Joueurs[0].prenom} nom={Joueurs[0].nom} age={Joueurs[0].age}/>
-//     <br />
-//     <DivResultForm prenom={Joueurs[1].prenom} nom={Joueurs[1].nom} age={Joueurs[1].age}/>
-//     <br />
-//     <DivResultForm prenom={Joueurs[2].prenom} nom={Joueurs[2].nom} age={Joueurs[2].age}/>
-//     <br />
-    
-//   </>
+  </>
 
-// )
-// }
+)
+}
 
 const Header = (props) => {
   return(
@@ -148,18 +160,21 @@ const Part = (props) => {
   return(
     <>
     <p>
-      {props.part} {props.exercises}
+      {props.part} - numero des exercices = {props.exercices}
     </p>
     </>
   )
 }
 
 const Content = (props) => {
+  console.log(props)
+  //debugger;
   return(
       <>
-      <Part part = {props.part1} exercises = {props.exercises1} />
-      <Part part = {props.part2} exercises = {props.exercises2} />
-      <Part part = {props.part3} exercises = {props.exercises3} />
+      {/* <p>{props.parts}</p> */}
+      <Part part = {props.parts[0].nom} exercices = {props.parts[0].exercices} />
+      <Part part = {props.parts[1].nom} exercices = {props.parts[1].exercices} />
+      <Part part = {props.parts[2].nom} exercices = {props.parts[2].exercices} />
       
       </>
   )
@@ -168,31 +183,45 @@ const Content = (props) => {
 
 
 const Total = (props) =>{
+  console.log('Total props == ',props)
+  debugger;
   return(
-    <p>Number of exercises {props.exercises1 + props.exercises2 + props.exercises3}</p>
+    <p>La quantité total des execises c'est {props.exercices1 + props.exercices2 + props.exercices3}</p>
   )
 }
 
-const App = () => {
-  const course = 'Half Stack application development'
-  const part1 = 'Fundamentals of React'
-  const exercises1 = 10
-  const part2 = 'Using props to pass data'
-  const exercises2 = 7
-  const part3 = 'State of a component'
-  const exercises3 = 14
-
+const AppFullStackOpenCours = () => {
+  const course = {
+    courseNom:  'Half Stack application development',
+    parts: 
+    [
+      {
+        nom: 'Fundamentals of React',
+        exercices: 10
+      },
+      {
+        nom: 'Using props to pass data',
+        exercices: 7
+      },
+      {
+        nom: 'State of a component',
+        exercices : 14
+      }
+    ]
+  }
+  console.log(course.parts[0].execise)
   return (
     <div>
-      <Header course = {course} />
-      <Content part1 = {part1} exercises1 = {exercises1} part2 = {part2} exercises2 = {exercises2} part3 = {part3} exercises3 = {exercises3} />
-      <Total exercises1 = {exercises1} exercises2 = {exercises2} exercises3 = {exercises3} />
+      {/* <ButtonSwitchMainView /> */}
+      <Header course = {course.courseNom} />
+      <Content parts = {course.parts} />
+      <Total exercices1 = {course.parts[0].exercices} exercices2 = {course.parts[1].exercices} exercices3 = {course.parts[2].exercices} />
       
     </div>
   )
 }
 
-const App2 = () => {
+const App3 = () => {
   const dateNow = new Date()
   const a = 5
   const b = 4
@@ -207,6 +236,22 @@ const App2 = () => {
     )
   )
 }
+//debugger;
+// const App = () =>  {
+//   isFullStackOpenCours == true ? return AppFullStackOpenCours : return MyPersonalApp;
+//   /* if(isFullStackOpenCours == true){
+//     return AppFullStackOpenCours;
+//   }
+//   else{
+//     return MyPersonalApp
+//   } */
+// }
+
+//TO-DO: comment faire le switch entre le deux app
+const App = isFullStackOpenCours == true ? AppFullStackOpenCours :  MyPersonalApp;
+  
+
+
 
 export default App
 //export default App2
